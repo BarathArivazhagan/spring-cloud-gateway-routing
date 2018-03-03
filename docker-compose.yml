@@ -7,15 +7,11 @@ services:
   jio-microservice:
     build: ./jio-store-service
     ports:
-      - "9501:9501"    
-    environment:
-      EUREKA_CLIENT_SERVICEURL_DEFAULTZONE: http://eureka-server:9000/eureka
+      - "9501:9501" 
   airtel-microservice:
     build: ./airtel-store-service
     ports:
-      - "9502:9502"   
-    environment:
-      EUREKA_CLIENT_SERVICEURL_DEFAULTZONE: http://eureka-server:9000/eureka
+      - "9502:9502"  
   vodaphone-microservice:
     build: ./wstore-node-express
     ports:
