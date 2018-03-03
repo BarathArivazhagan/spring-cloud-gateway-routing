@@ -52,15 +52,15 @@ This project demonstrates the usage of API gateway between microservices using s
  * Download/Clone the repository : 
    
    ```
-   ./mvnw clean install
-
+   $ git clone https://github.com/BarathArivazhagan/spring-cloud-gateway-routing.git
+   $ cd spring-cloud-gateway-routing
+   $ ./mvnw clean install
    ```
 
  * To run the application :
 
 	  ```
-	  docker-compose up
-
+	 $ docker-compose up
 	  ```
 
 ## How to test the application ? 
@@ -92,7 +92,6 @@ spring:
           - Path= /vodaphone/*
           filters:
           - StripPrefix=1
-
 ```
 <div>
 	  <span>Navigate to <a href="http://localhost:9500/jio/customers">jio gateway</a>  for jio service </span><br>
@@ -105,14 +104,14 @@ spring:
 
 ![spring cloud gateway](images/spring_cloud_gateway_header.png)
 
-Enable SPRING_PROFILES_ACTIVE=header to test header based routing strategy
+Enable <b>SPRING_PROFILES_ACTIVE=header</b> to test header based routing strategy
 
 
 #### Query param based routing strategy
 
 ![spring cloud gateway](images/spring_cloud_gateway_param.png)
 
-Enable SPRING_PROFILES_ACTIVE=query to test query param based routing strategy
+Enable <b>SPRING_PROFILES_ACTIVE=query</b> to test query param based routing strategy
 
 
 #### Future Actions : 
@@ -125,7 +124,6 @@ Enable SPRING_PROFILES_ACTIVE=query to test query param based routing strategy
 
 ```
   docker-compose build
-
 ```
 
 
