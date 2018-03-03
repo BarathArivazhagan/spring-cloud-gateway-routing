@@ -19,7 +19,7 @@ This project demonstrates the usage of API gateway between microservices using s
     <th style="text-align:left">Description</th>
   </tr>
   <tr>
-    <td><a href="https://github.com/BarathArivazhagan/spring-cloud-gateway-routing/tree/master/spring-cloud-gateway"> spring-cloud-gateway-router</a></td>
+    <td><a href="https://github.com/BarathArivazhagan/spring-cloud-gateway-routing/tree/master/spring-cloud-gateway"> spring-cloud-gateway</a></td>
     <td>9500</td>
     <td>spring cloud gateway router</td>
   </tr>
@@ -96,14 +96,27 @@ spring:
 ```
 <div>
 	  <span>Navigate to <a href="http://localhost:9500/jio/customers">jio gateway</a>  for jio service </span><br>
-    <span>Navigate to <a href="http://localhost:9500/airtel/customers">airtel gateway</a> for airtel service </span>
-    <span>Navigate to <a href="http://localhost:9500/vodaphone/customers">vodaphone gateway</a> for airtel service </span>
+        <span>Navigate to <a href="http://localhost:9500/airtel/customers">airtel gateway</a> for airtel service </span><br>
+        <span>Navigate to <a href="http://localhost:9500/vodaphone/customers">vodaphone gateway</a> for airtel service </span>
 </div>
+
+
+#### Header based routing strategy 
+
+![spring cloud gateway](images/spring_cloud_gateway_header.png)
+
+Enable SPRING_PROFILES_ACTIVE=header to test header based routing strategy
+
+
+#### Query param based routing strategy
+
+![spring cloud gateway](images/spring_cloud_gateway_param.png)
+
+Enable SPRING_PROFILES_ACTIVE=query to test query param based routing strategy
 
 
 #### Future Actions : 
 
-* Config server : externalize the properties. 
 * Introduce hystrix stream and feign clients to interact with other microservices.
 
 
@@ -119,6 +132,8 @@ spring:
 
 ## References 
 
-*
+* http://projects.spring.io/spring-cloud/
 * http://cloud.spring.io/spring-cloud-netflix/spring-cloud-netflix.html
+* https://cloud.spring.io/spring-cloud-gateway/
+* http://cloud.spring.io/spring-cloud-static/spring-cloud-gateway/2.0.0.M8/single/spring-cloud-gateway.html
 
