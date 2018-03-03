@@ -52,6 +52,6 @@ public class CustomerService {
     @PostConstruct
     public void init(){
 
-        customerRepository.saveAll(Arrays.asList(new Customer("barath-jio", 25, Customer.CustomerGender.MALE)));
+        customerRepository.saveAll(Arrays.asList(new Customer("barath-airtel", 30, Customer.CustomerGender.MALE)));
     }
 }

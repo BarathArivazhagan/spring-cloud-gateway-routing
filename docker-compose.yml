@@ -13,7 +13,7 @@ services:
     ports:
       - "9502:9502"  
   vodaphone-microservice:
-    build: ./wstore-node-express
+    build: ./vodaphone-store-service
     ports:
       - "9503:9503"
   spring-cloud-gateway-service:
@@ -27,5 +27,14 @@ services:
     environment:
       SPRING_PROFILES_ACTIVE: path
       SPRING_CLOUD_GATEWAY_ROUTES[0]_URI: http://jio-microservice:9501
+      SPRING_CLOUD_GATEWAY_ROUTES[0]_ID: jio-service
+      SPRING_CLOUD_GATEWAY_ROUTES[0]_PREDICATES[0]: Path= /jio/*
+      SPRING_CLOUD_GATEWAY_ROUTES[0]_FILTERS[0]: StripPrefix=1
       SPRING_CLOUD_GATEWAY_ROUTES[1]_URI: http://airtel-microservice:9502
+      SPRING_CLOUD_GATEWAY_ROUTES[1]_ID: airtel-service
+      SPRING_CLOUD_GATEWAY_ROUTES[1]_PREDICATES[0]: Path= /airtel/*
+      SPRING_CLOUD_GATEWAY_ROUTES[1]_FILTERS[0]: StripPrefix=1
       SPRING_CLOUD_GATEWAY_ROUTES[2]_URI: http://vodaphone-microservice:9503
+      SPRING_CLOUD_GATEWAY_ROUTES[2]_ID: vodaphone-service
+      SPRING_CLOUD_GATEWAY_ROUTES[2]_PREDICATES[0]: Path= /vodaphone/*
+      SPRING_CLOUD_GATEWAY_ROUTES[2]_FILTERS[0]: StripPrefix=1
