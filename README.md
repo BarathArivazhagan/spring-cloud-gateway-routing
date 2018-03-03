@@ -1,2 +1,124 @@
 # spring-cloud-gateway-routing
 This project demonstrates the usage of API gateway between microservices using spring cloud gateway
+
+
+## what is spring cloud gateway ?
+
+<p>Spring Cloud Gateway is an intelligent and programmable router based on Project Reactor.</p>
+
+
+![spring cloud gateway](images/spring_cloud_gateway.png)
+
+
+<table>
+
+
+ <tr>
+    <th style="text-align:left">Name</th>
+    <th style="text-align:left">Port</th> 
+    <th style="text-align:left">Description</th>
+  </tr>
+  <tr>
+    <td><a href="https://github.com/BarathArivazhagan/spring-cloud-gateway-routing/tree/master/spring-cloud-gateway"> spring-cloud-gateway-router</a></td>
+    <td>9500</td>
+    <td>spring cloud gateway router</td>
+  </tr>
+  <tr>
+    <td><a href="https://github.com/BarathArivazhagan/spring-cloud-gateway-routing/tree/master/jio-store-service">jio-store-service</a></td>
+    <td>9501</td>
+    <td>jio microservice</td>
+  </tr>
+  <tr>
+    <td><a href="https://github.com/BarathArivazhagan/spring-cloud-gateway-routing/tree/master/airtel-store-service">airtel-store-service</a></td>
+    <td>9502</td>
+    <td>airtel microservice</td>
+  </tr>
+  <tr>
+    <td><a href="https://github.com/BarathArivazhagan/spring-cloud-gateway-routing/tree/master/vodaphone-store-service">vodaphone-store-service</a></td>
+    <td>9503</td>
+    <td>vodaphone microservice</td>
+  </tr>
+   <tr>
+    <td><a href="https://github.com/BarathArivazhagan/spring-cloud-gateway-routing/tree/master/config-server">config-server</a></td>
+    <td>8888</td>
+    <td>spring cloud config server </td>
+  </tr>
+  
+</table>
+
+
+## How to build and run ?
+
+ * Download/Clone the repository : 
+   
+   ```
+   ./mvnw clean install
+
+   ```
+
+ * To run the application :
+
+	  ```
+	  docker-compose up
+
+	  ```
+
+## How to test the application ? 
+
+Use gateway routes to route to respective microservices. 
+
+spring cloud gateway route definition : 
+
+```
+spring:
+  cloud:
+    gateway:
+      routes:
+        - id: jio-service
+          uri: http://localhost:9501
+          predicates:
+          - Path= /jio/*
+          filters:
+          - StripPrefix=1 # required to strip the prefix made to the request . Ex /jio/customers request will go to jio service as /customers 
+        - id: airtel-service
+          uri: http://localhost:9502
+          predicates:
+          - Path= /airtel/*
+          filters:
+          - StripPrefix=1
+        - id: vodaphone-service
+          uri: http://localhost:9503
+          predicates:
+          - Path= /vodaphone/*
+          filters:
+          - StripPrefix=1
+
+```
+<div>
+	  <span>Navigate to <a href="http://localhost:9500/jio/customers">jio gateway</a>  for jio service </span><br>
+    <span>Navigate to <a href="http://localhost:9500/airtel/customers">airtel gateway</a> for airtel service </span>
+    <span>Navigate to <a href="http://localhost:9500/vodaphone/customers">vodaphone gateway</a> for airtel service </span>
+</div>
+
+
+#### Future Actions : 
+
+* Config server : externalize the properties. 
+* Introduce hystrix stream and feign clients to interact with other microservices.
+
+
+
+## How to rebuild the project after the changes? 
+
+```
+  docker-compose build
+
+```
+
+
+
+## References 
+
+*
+* http://cloud.spring.io/spring-cloud-netflix/spring-cloud-netflix.html
+
