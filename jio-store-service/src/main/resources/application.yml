@@ -1,0 +1,13 @@
+
+server:
+  port: 9501
+
+
+
+spring:
+  application:
+    name: jio-store-service
+  jpa:
+      show-sql: true
+      hibernate:
+        ddl-auto: create

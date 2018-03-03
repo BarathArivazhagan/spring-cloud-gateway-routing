@@ -1,0 +1,8 @@
+server:
+  port: 9500
+
+spring:
+  profiles:
+    active:
+      - path # path | header | query are the other spring profiles for other strategies
+           

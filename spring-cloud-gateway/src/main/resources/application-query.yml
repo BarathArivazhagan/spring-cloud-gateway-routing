@@ -1,0 +1,18 @@
+
+  
+spring:
+  cloud:
+    gateway:
+      routes:
+        - id: jio-service
+          uri: http://localhost:9501
+          predicates:
+          - Query= store,jio
+        - id: airtel-service
+          uri: http://localhost:9502
+          predicates:
+          - Query= store,airtel
+        - id: vodaphone-service
+          uri: http://localhost:9503
+          predicates:
+          - Query= store,vodaphone

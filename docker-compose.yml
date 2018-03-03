@@ -1,0 +1,35 @@
+version: '3'
+services: 
+  config-server-service:
+    build: ./config-server
+    ports:
+      - "8888:8888" 
+  jio-microservice:
+    build: ./jio-store-service
+    ports:
+      - "9501:9501"    
+    environment:
+      EUREKA_CLIENT_SERVICEURL_DEFAULTZONE: http://eureka-server:9000/eureka
+  airtel-microservice:
+    build: ./airtel-store-service
+    ports:
+      - "9502:9502"   
+    environment:
+      EUREKA_CLIENT_SERVICEURL_DEFAULTZONE: http://eureka-server:9000/eureka
+  vodaphone-microservice:
+    build: ./wstore-node-express
+    ports:
+      - "9503:9503"
+  spring-cloud-gateway-service:
+    build: ./spring-cloud-gateway
+    ports:
+      - "9500:9500"
+    depends_on: 
+      - jio-microservice
+      - airtel-microservice
+      - vodaphone-microservice
+    environment:
+      SPRING_PROFILES_ACTIVE: path
+      SPRING_CLOUD_GATEWAY_ROUTES[0]_URI: http://jio-microservice:9501
+      SPRING_CLOUD_GATEWAY_ROUTES[1]_URI: http://airtel-microservice:9502
+      SPRING_CLOUD_GATEWAY_ROUTES[2]_URI: http://vodaphone-microservice:9503

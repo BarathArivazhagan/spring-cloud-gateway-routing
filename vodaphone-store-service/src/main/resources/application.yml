@@ -1,0 +1,13 @@
+
+server:
+  port: 9503
+
+
+
+spring:
+  application:
+    name: vodaphone-store-service
+  jpa:
+      show-sql: true
+      hibernate:
+        ddl-auto: create
