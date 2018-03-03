@@ -93,11 +93,38 @@ spring:
           filters:
           - StripPrefix=1
 ```
-<div>
-	  <span>Navigate to <a href="http://localhost:9500/jio/customers">jio gateway</a>  for jio service </span><br>
-        <span>Navigate to <a href="http://localhost:9500/airtel/customers">airtel gateway</a> for airtel service </span><br>
-        <span>Navigate to <a href="http://localhost:9500/vodaphone/customers">vodaphone gateway</a> for airtel service </span>
-</div>
+
+```
+$ curl http://localhost:9500/jio/customers
+
+[
+    {
+        "customerName": "barath-jio",
+        "customerAge": 25,
+        "customerGender": "MALE"
+    }
+]
+
+$ curl http://localhost:9500/airtel/customers
+
+[
+    {
+        "customerName": "barath-airtel",
+        "customerAge": 25,
+        "customerGender": "MALE"
+    }
+]
+
+$ curl http://localhost:9500/vodaphone/customers
+
+[
+    {
+        "customerName": "barath-vodaphone",
+        "customerAge": 25,
+        "customerGender": "MALE"
+    }
+]
+```
 
 
 #### Header based routing strategy 
