@@ -1,5 +1,5 @@
 # spring-cloud-gateway-routing
-This project demonstrates the usage of API gateway between microservices using spring cloud gateway
+This project demonstrates the usage of API gateway between microservices using spring cloud gateway.
 
 
 ## what is spring cloud gateway ?
