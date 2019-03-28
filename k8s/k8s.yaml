@@ -11,20 +11,15 @@ metadata:
 # config map to pass environment variables to gateway-service
 apiVersion: v1
 data:
-  user.service.url: http://${USER_SERVICE_SERVICE_HOST}:${USER_SERVICE_SERVICE_PORT}
-  bank.service.url: http://${BANK_SERVICE_SERVICE_HOST}:${BANK_SERVICE_SERVICE_PORT}
-  SPRING_CLOUD_GATEWAY_ROUTES[0]_URI: http://jio-microservice:9501
-  SPRING_CLOUD_GATEWAY_ROUTES[0]_ID: jio-service
-  SPRING_CLOUD_GATEWAY_ROUTES[0]_PREDICATES[0]: Path= /jio/*
-  SPRING_CLOUD_GATEWAY_ROUTES[0]_FILTERS[0]: StripPrefix=1
-  SPRING_CLOUD_GATEWAY_ROUTES[1]_URI: http://airtel-microservice:9502
-  SPRING_CLOUD_GATEWAY_ROUTES[1]_ID: airtel-service
-  SPRING_CLOUD_GATEWAY_ROUTES[1]_PREDICATES[0]: Path= /airtel/*
-  SPRING_CLOUD_GATEWAY_ROUTES[1]_FILTERS[0]: StripPrefix=1
-  SPRING_CLOUD_GATEWAY_ROUTES[2]_URI: http://vodaphone-microservice:9503
-  SPRING_CLOUD_GATEWAY_ROUTES[2]_ID: vodaphone-service
-  SPRING_CLOUD_GATEWAY_ROUTES[2]_PREDICATES[0]: Path= /vodaphone/*
-  SPRING_CLOUD_GATEWAY_ROUTES[2]_FILTERS[0]: StripPrefix=1
+  jio.service.url: http://jio-microservice:9501
+  jio.service.id: jio-service
+  jio.service.path: Path= /jio/*
+  airtel.service.url:  http://airtel-microservice:9502
+  airtel.service.id: airtel-service
+  airtel.service.path: Path= /airtel/*
+  vodaphone.service.url: http://vodaphone-microservice:9503
+  vodaphone.service.id: vodaphone-service
+  vodaphone.service.path: Path= /vodaphone/*
 kind: ConfigMap
 metadata:
   name: api-gateway-config-map
@@ -116,16 +111,57 @@ spec:
               configMapKeyRef:
                   name: spring-config-map
                   key: spring.profiles.active
-        - name: user.service.url
+        - name: SPRING_CLOUD_GATEWAY_ROUTES[0]_URI
           valueFrom:
               configMapKeyRef:
                   name: api-gateway-config-map
-                  key: user.service.url
-        - name: bank.service.url
+                  key: jio.service.url
+        - name: SPRING_CLOUD_GATEWAY_ROUTES[0]_ID
           valueFrom:
               configMapKeyRef:
                   name: api-gateway-config-map
-                  key: bank.service.url
+                  key: jio.service.id
+        - name: SPRING_CLOUD_GATEWAY_ROUTES[0]_PREDICATES[0]
+          valueFrom:
+              configMapKeyRef:
+                  name: api-gateway-config-map
+                  key: jio.service.path
+        - name: SPRING_CLOUD_GATEWAY_ROUTES[0]_FILTERS[0]
+          value: StripPrefix=1 
+        - name: SPRING_CLOUD_GATEWAY_ROUTES[1]_URI
+          valueFrom:
+              configMapKeyRef:
+                  name: api-gateway-config-map
+                  key: airtel.service.url
+        - name: SPRING_CLOUD_GATEWAY_ROUTES[1]_ID
+          valueFrom:
+              configMapKeyRef:
+                  name: api-gateway-config-map
+                  key: airtel.service.id
+        - name: SPRING_CLOUD_GATEWAY_ROUTES[1]_PREDICATES[0]
+          valueFrom:
+              configMapKeyRef:
+                  name: api-gateway-config-map
+                  key: airtel.service.path
+        - name: SPRING_CLOUD_GATEWAY_ROUTES[2]_FILTERS[0]
+          value: StripPrefix=1 
+        - name: SPRING_CLOUD_GATEWAY_ROUTES[2]_URI
+          valueFrom:
+              configMapKeyRef:
+                  name: api-gateway-config-map
+                  key: vodaphone.service.url
+        - name: SPRING_CLOUD_GATEWAY_ROUTES[2]_ID
+          valueFrom:
+              configMapKeyRef:
+                  name: api-gateway-config-map
+                  key: vodaphone.service.id
+        - name: SPRING_CLOUD_GATEWAY_ROUTES[2]_PREDICATES[0]
+          valueFrom:
+              configMapKeyRef:
+                  name: api-gateway-config-map
+                  key: vodaphone.service.path
+        - name: SPRING_CLOUD_GATEWAY_ROUTES[2]_FILTERS[0]
+          value: StripPrefix=1             
 ---
 
 # deployment config for airtel-store-service
