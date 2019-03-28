@@ -52,65 +52,6 @@ spec:
               configMapKeyRef:
                   name: spring-config-map
                   key: spring.profiles.active
-   
----
-# deployment config for vodaphone-store-service
-
-apiVersion: apps/v1
-kind: Deployment
-metadata:
-  name: vodaphone-store-service
-spec:
-  selector:
-    matchLabels:
-      app: vodaphone-store-service
-  replicas: 1
-  template:
-    metadata:
-      labels:
-        app: vodaphone-store-service
-    spec:
-      containers:   
-      - name: vodaphone-store-service
-        image: barathece91/vodaphone-store-service-k8s
-        ports:
-        - containerPort: 9000
-        env:
-        - name: SPRING_PROFILES_ACTIVE
-          valueFrom:
-              configMapKeyRef:
-                  name: spring-config-map
-                  key: spring.profiles.active   
----
-
-
-# deployment config for jio-store-service
-
-apiVersion: apps/v1
-kind: Deployment
-metadata:
-  name: jio-store-service
-spec:
-  selector:
-    matchLabels:
-      app: jio-store-service
-  replicas: 1
-  template:
-    metadata:
-      labels:
-        app: jio-store-service
-    spec:
-      containers:
-      - name: jio-store-service
-        image: barathece91/jio-store-service-k8s
-        ports:
-        - containerPort: 9500
-        env:
-        - name: SPRING_PROFILES_ACTIVE
-          valueFrom:
-              configMapKeyRef:
-                  name: spring-config-map
-                  key: spring.profiles.active
         - name: SPRING_CLOUD_GATEWAY_ROUTES[0]_URI
           valueFrom:
               configMapKeyRef:
@@ -161,7 +102,67 @@ spec:
                   name: api-gateway-config-map
                   key: vodaphone.service.path
         - name: SPRING_CLOUD_GATEWAY_ROUTES[2]_FILTERS[0]
-          value: StripPrefix=1             
+          value: StripPrefix=1  
+   
+---
+# deployment config for vodaphone-store-service
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: vodaphone-store-service
+spec:
+  selector:
+    matchLabels:
+      app: vodaphone-store-service
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: vodaphone-store-service
+    spec:
+      containers:   
+      - name: vodaphone-store-service
+        image: barathece91/vodaphone-store-service-k8s
+        ports:
+        - containerPort: 9503
+        env:
+        - name: SPRING_PROFILES_ACTIVE
+          valueFrom:
+              configMapKeyRef:
+                  name: spring-config-map
+                  key: spring.profiles.active   
+---
+
+
+# deployment config for jio-store-service
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: jio-store-service
+spec:
+  selector:
+    matchLabels:
+      app: jio-store-service
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: jio-store-service
+    spec:
+      containers:
+      - name: jio-store-service
+        image: barathece91/jio-store-service-k8s
+        ports:
+        - containerPort: 9501
+        env:
+        - name: SPRING_PROFILES_ACTIVE
+          valueFrom:
+              configMapKeyRef:
+                  name: spring-config-map
+                  key: spring.profiles.active
+          
 ---
 
 # deployment config for airtel-store-service
@@ -184,7 +185,7 @@ spec:
       - name: airtel-store-service
         image: barathece91/airtel-store-service-k8s
         ports:
-        - containerPort: 8080
+        - containerPort: 9502
 ---
 kind: Service
 apiVersion: v1
