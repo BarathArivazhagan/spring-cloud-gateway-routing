@@ -11,13 +11,13 @@ metadata:
 # config map to pass environment variables to gateway-service
 apiVersion: v1
 data:
-  jio.service.url: http://jio-microservice:9501
+  jio.service.url: http://jio-service:9501
   jio.service.id: jio-service
   jio.service.path: Path= /jio/*
-  airtel.service.url:  http://airtel-microservice:9502
+  airtel.service.url:  http://airtel-service:9502
   airtel.service.id: airtel-service
   airtel.service.path: Path= /airtel/*
-  vodaphone.service.url: http://vodaphone-microservice:9503
+  vodaphone.service.url: http://vodaphone-service:9503
   vodaphone.service.id: vodaphone-service
   vodaphone.service.path: Path= /vodaphone/*
 kind: ConfigMap
@@ -110,20 +110,20 @@ spec:
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: vodaphone-store-service
+  name: vodaphone-service
 spec:
   selector:
     matchLabels:
-      app: vodaphone-store-service
+      app: vodaphone-service
   replicas: 1
   template:
     metadata:
       labels:
-        app: vodaphone-store-service
+        app: vodaphone-service
     spec:
       containers:   
-      - name: vodaphone-store-service
-        image: barathece91/vodaphone-store-service-k8s
+      - name: vodaphone-service
+        image: barathece91/vodaphone-service-k8s
         ports:
         - containerPort: 9503
         env:
@@ -140,20 +140,20 @@ spec:
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: jio-store-service
+  name: jio-service
 spec:
   selector:
     matchLabels:
-      app: jio-store-service
+      app: jio-service
   replicas: 1
   template:
     metadata:
       labels:
-        app: jio-store-service
+        app: jio-service
     spec:
       containers:
-      - name: jio-store-service
-        image: barathece91/jio-store-service-k8s
+      - name: jio-service
+        image: barathece91/jio-service-k8s
         ports:
         - containerPort: 9501
         env:
@@ -170,30 +170,30 @@ spec:
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: airtel-store-service
+  name: airtel-service
 spec:
   selector:
     matchLabels:
-      app: airtel-store-service
+      app: airtel-service
   replicas: 1
   template:
     metadata:
       labels:
-        app: airtel-store-service
+        app: airtel-service
     spec:
       containers:
-      - name: airtel-store-service
-        image: barathece91/airtel-store-service-k8s
+      - name: airtel-service
+        image: barathece91/airtel-service-k8s
         ports:
         - containerPort: 9502
 ---
 kind: Service
 apiVersion: v1
 metadata:
-  name: gateway-microservice
+  name: gateway-service
 spec:
   selector:
-    app: gateway-microservice
+    app: gateway-service
   type: ClusterIP
   ports:
   - protocol: TCP
@@ -203,10 +203,10 @@ spec:
 kind: Service
 apiVersion: v1
 metadata:
-  name: jio-microservice
+  name: jio-service
 spec:
   selector:
-    app: jio-microservice
+    app: jio-service
   type: ClusterIP
   ports:
   - protocol: TCP
@@ -217,10 +217,10 @@ spec:
 kind: Service
 apiVersion: v1
 metadata:
-  name: airtel-microservice
+  name: airtel-service
 spec:
   selector:
-    app: airtel-microservice
+    app: airtel-service
   type: ClusterIP
   ports:
   - protocol: TCP
@@ -231,10 +231,10 @@ spec:
 kind: Service
 apiVersion: v1
 metadata:
-  name: vodaphone-microservice
+  name: vodaphone-service
 spec:
   selector:
-    app: vodaphone-microservice
+    app: vodaphone-service
   type: ClusterIP
   ports:
   - protocol: TCP
