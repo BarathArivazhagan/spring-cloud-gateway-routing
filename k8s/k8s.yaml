@@ -1,0 +1,206 @@
+
+# config map to pass environment variables to containers
+apiVersion: v1
+data:
+  spring.profiles.active: kubernetes,path
+kind: ConfigMap
+metadata:
+  name: spring-config-map
+
+---
+# config map to pass environment variables to gateway-service
+apiVersion: v1
+data:
+  user.service.url: http://${USER_SERVICE_SERVICE_HOST}:${USER_SERVICE_SERVICE_PORT}
+  bank.service.url: http://${BANK_SERVICE_SERVICE_HOST}:${BANK_SERVICE_SERVICE_PORT}
+  SPRING_CLOUD_GATEWAY_ROUTES[0]_URI: http://jio-microservice:9501
+  SPRING_CLOUD_GATEWAY_ROUTES[0]_ID: jio-service
+  SPRING_CLOUD_GATEWAY_ROUTES[0]_PREDICATES[0]: Path= /jio/*
+  SPRING_CLOUD_GATEWAY_ROUTES[0]_FILTERS[0]: StripPrefix=1
+  SPRING_CLOUD_GATEWAY_ROUTES[1]_URI: http://airtel-microservice:9502
+  SPRING_CLOUD_GATEWAY_ROUTES[1]_ID: airtel-service
+  SPRING_CLOUD_GATEWAY_ROUTES[1]_PREDICATES[0]: Path= /airtel/*
+  SPRING_CLOUD_GATEWAY_ROUTES[1]_FILTERS[0]: StripPrefix=1
+  SPRING_CLOUD_GATEWAY_ROUTES[2]_URI: http://vodaphone-microservice:9503
+  SPRING_CLOUD_GATEWAY_ROUTES[2]_ID: vodaphone-service
+  SPRING_CLOUD_GATEWAY_ROUTES[2]_PREDICATES[0]: Path= /vodaphone/*
+  SPRING_CLOUD_GATEWAY_ROUTES[2]_FILTERS[0]: StripPrefix=1
+kind: ConfigMap
+metadata:
+  name: api-gateway-config-map
+---
+
+# deployment config for spring cloud gateway service
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: gateway-service
+spec:
+  selector:
+    matchLabels:
+      app: gateway-service
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: gateway-service
+    spec:
+      containers:
+      - name: gateway-service
+        image: barathece91/gateway-service-k8s
+        ports:
+        - containerPort: 9500
+        env:
+        - name: SPRING_PROFILES_ACTIVE
+          valueFrom:
+              configMapKeyRef:
+                  name: spring-config-map
+                  key: spring.profiles.active
+   
+---
+# deployment config for vodaphone-store-service
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: vodaphone-store-service
+spec:
+  selector:
+    matchLabels:
+      app: vodaphone-store-service
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: vodaphone-store-service
+    spec:
+      containers:   
+      - name: vodaphone-store-service
+        image: barathece91/vodaphone-store-service-k8s
+        ports:
+        - containerPort: 9000
+        env:
+        - name: SPRING_PROFILES_ACTIVE
+          valueFrom:
+              configMapKeyRef:
+                  name: spring-config-map
+                  key: spring.profiles.active   
+---
+
+
+# deployment config for jio-store-service
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: jio-store-service
+spec:
+  selector:
+    matchLabels:
+      app: jio-store-service
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: jio-store-service
+    spec:
+      containers:
+      - name: jio-store-service
+        image: barathece91/jio-store-service-k8s
+        ports:
+        - containerPort: 9500
+        env:
+        - name: SPRING_PROFILES_ACTIVE
+          valueFrom:
+              configMapKeyRef:
+                  name: spring-config-map
+                  key: spring.profiles.active
+        - name: user.service.url
+          valueFrom:
+              configMapKeyRef:
+                  name: api-gateway-config-map
+                  key: user.service.url
+        - name: bank.service.url
+          valueFrom:
+              configMapKeyRef:
+                  name: api-gateway-config-map
+                  key: bank.service.url
+---
+
+# deployment config for airtel-store-service
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: airtel-store-service
+spec:
+  selector:
+    matchLabels:
+      app: airtel-store-service
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: airtel-store-service
+    spec:
+      containers:
+      - name: airtel-store-service
+        image: barathece91/airtel-store-service-k8s
+        ports:
+        - containerPort: 8080
+---
+kind: Service
+apiVersion: v1
+metadata:
+  name: gateway-microservice
+spec:
+  selector:
+    app: gateway-microservice
+  type: ClusterIP
+  ports:
+  - protocol: TCP
+    port: 9500
+    targetPort: 9500
+---
+kind: Service
+apiVersion: v1
+metadata:
+  name: jio-microservice
+spec:
+  selector:
+    app: jio-microservice
+  type: ClusterIP
+  ports:
+  - protocol: TCP
+    port: 9501
+    targetPort: 9501
+
+---
+kind: Service
+apiVersion: v1
+metadata:
+  name: airtel-microservice
+spec:
+  selector:
+    app: airtel-microservice
+  type: ClusterIP
+  ports:
+  - protocol: TCP
+    port: 9502
+    targetPort: 9502
+---
+
+kind: Service
+apiVersion: v1
+metadata:
+  name: vodaphone-microservice
+spec:
+  selector:
+    app: vodaphone-microservice
+  type: ClusterIP
+  ports:
+  - protocol: TCP
+    port: 9503
+    targetPort: 9503
+    
