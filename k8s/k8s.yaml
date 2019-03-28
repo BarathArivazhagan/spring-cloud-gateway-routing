@@ -52,56 +52,56 @@ spec:
               configMapKeyRef:
                   name: spring-config-map
                   key: spring.profiles.active
-        - name: SPRING_CLOUD_GATEWAY_ROUTES[0]_URI
+        - name: SPRING_CLOUD_GATEWAY_ROUTES_0_URI
           valueFrom:
               configMapKeyRef:
                   name: api-gateway-config-map
                   key: jio.service.url
-        - name: SPRING_CLOUD_GATEWAY_ROUTES[0]_ID
+        - name: SPRING_CLOUD_GATEWAY_ROUTES_0_ID
           valueFrom:
               configMapKeyRef:
                   name: api-gateway-config-map
                   key: jio.service.id
-        - name: SPRING_CLOUD_GATEWAY_ROUTES[0]_PREDICATES[0]
+        - name: SPRING_CLOUD_GATEWAY_ROUTES_0_PREDICATES_0_
           valueFrom:
               configMapKeyRef:
                   name: api-gateway-config-map
                   key: jio.service.path
-        - name: SPRING_CLOUD_GATEWAY_ROUTES[0]_FILTERS[0]
+        - name: SPRING_CLOUD_GATEWAY_ROUTES_0_FILTERS_0_
           value: StripPrefix=1 
-        - name: SPRING_CLOUD_GATEWAY_ROUTES[1]_URI
+        - name: SPRING_CLOUD_GATEWAY_ROUTES_1_URI
           valueFrom:
               configMapKeyRef:
                   name: api-gateway-config-map
                   key: airtel.service.url
-        - name: SPRING_CLOUD_GATEWAY_ROUTES[1]_ID
+        - name: SPRING_CLOUD_GATEWAY_ROUTES_1_ID
           valueFrom:
               configMapKeyRef:
                   name: api-gateway-config-map
                   key: airtel.service.id
-        - name: SPRING_CLOUD_GATEWAY_ROUTES[1]_PREDICATES[0]
+        - name: SPRING_CLOUD_GATEWAY_ROUTES_1_PREDICATES_0_
           valueFrom:
               configMapKeyRef:
                   name: api-gateway-config-map
                   key: airtel.service.path
-        - name: SPRING_CLOUD_GATEWAY_ROUTES[2]_FILTERS[0]
+        - name: SPRING_CLOUD_GATEWAY_ROUTES_2_FILTERS_0_
           value: StripPrefix=1 
-        - name: SPRING_CLOUD_GATEWAY_ROUTES[2]_URI
+        - name: SPRING_CLOUD_GATEWAY_ROUTES_2_URI
           valueFrom:
               configMapKeyRef:
                   name: api-gateway-config-map
                   key: vodaphone.service.url
-        - name: SPRING_CLOUD_GATEWAY_ROUTES[2]_ID
+        - name: SPRING_CLOUD_GATEWAY_ROUTES_2_ID
           valueFrom:
               configMapKeyRef:
                   name: api-gateway-config-map
                   key: vodaphone.service.id
-        - name: SPRING_CLOUD_GATEWAY_ROUTES[2]_PREDICATES[0]
+        - name: SPRING_CLOUD_GATEWAY_ROUTES_2_PREDICATES_0_
           valueFrom:
               configMapKeyRef:
                   name: api-gateway-config-map
                   key: vodaphone.service.path
-        - name: SPRING_CLOUD_GATEWAY_ROUTES[2]_FILTERS[0]
+        - name: SPRING_CLOUD_GATEWAY_ROUTES_2_FILTERS_0_
           value: StripPrefix=1  
    
 ---
