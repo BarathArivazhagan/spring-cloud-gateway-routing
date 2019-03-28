@@ -2,22 +2,27 @@ version: '3'
 services: 
   config-server-service:
     build: ./config-server
+    image: barathece91/config-server-k8s
     ports:
       - "8888:8888" 
   jio-microservice:
     build: ./jio-store-service
+    image: barathece91/jio-store-service-k8s
     ports:
       - "9501:9501" 
   airtel-microservice:
     build: ./airtel-store-service
+    image: barathece91/airtel-store-service-k8s
     ports:
       - "9502:9502"  
   vodaphone-microservice:
     build: ./vodaphone-store-service
+    image: barathece91/vodaphone-store-service-k8s
     ports:
       - "9503:9503"
   spring-cloud-gateway-service:
     build: ./spring-cloud-gateway
+    image: barathece91/gateway-service-k8s
     ports:
       - "9500:9500"
     depends_on: 
