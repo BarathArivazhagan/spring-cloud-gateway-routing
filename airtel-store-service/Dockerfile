@@ -1,5 +1,5 @@
 FROM openjdk:8-jdk-alpine
-RUN adduser demo
+RUN adduser -D demo
 USER demo
 VOLUME /tmp
 ADD target/airtel-store-service-*.jar app.jar
