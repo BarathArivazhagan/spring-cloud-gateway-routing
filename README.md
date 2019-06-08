@@ -10,6 +10,30 @@ This project demonstrates the usage of API gateway between microservices using s
 ![spring cloud gateway](images/spring_cloud_gateway.png)
 
 
+#### Compatability Matrix
+
+choose the branch based on below maintained versions.
+
+<table>
+ <tr>
+    <th style="text-align:left">Branch/Version</th>
+    <th style="text-align:left">Spring Boot</th>
+    <th style="text-align:left">Spring Cloud</th>
+  </tr>
+  <tr>
+    <td>master</td>
+    <td>2.1.5.RELEASE</td>
+    <td>Greenwich.SR1</td>
+  </tr>  
+  <tr>
+    <td>v2.1.3</td>
+    <td>2.1.3.RELEASE</td>
+    <td>Greenwich.RELEASE</td>
+  </tr>  
+</table>
+
+#### Projects
+
 <table>
 
 
@@ -43,11 +67,34 @@ This project demonstrates the usage of API gateway between microservices using s
     <td>8888</td>
     <td>spring cloud config server </td>
   </tr>
+     <tr>
+    <td><a href="https://github.com/BarathArivazhagan/spring-cloud-gateway-routing/tree/master/eureka-server">eureka-server</a></td>
+    <td>8761</td>
+    <td>eureka-server </td>
+  </tr>
   
 </table>
 
+#### Eureka Server Registration (Optional)
 
-## How to build and run ?
+By default eureka is disabled.
+
+```yaml
+eureka:
+  client:
+    enabled: false
+```
+
+To enable eureka, set below property in all the microservices and restart.
+
+```yaml
+spring:
+  profiles:
+    active: eureka
+```
+
+
+#### How to build and run ?
 
  * Download/Clone the repository : 
    
@@ -63,7 +110,7 @@ This project demonstrates the usage of API gateway between microservices using s
 	 $ docker-compose up
 	  ```
 
-## How to test the application ? 
+#### How to test the application ? 
 
 Use gateway routes to route to respective microservices. 
 
@@ -140,14 +187,13 @@ Enable <b>SPRING_PROFILES_ACTIVE=header</b> to test header based routing strateg
 
 Enable <b>SPRING_PROFILES_ACTIVE=query</b> to test query param based routing strategy
 
+#### Eureka Registration View
 
-#### Future Actions : 
-
-* Introduce hystrix stream and feign clients to interact with other microservices.
-
+![eureka_registration_view](images/eureka_registration_view.png)
 
 
-## How to rebuild the project after the changes? 
+
+#### How to rebuild the project after the changes? 
 
 ```
   docker-compose build
@@ -157,8 +203,8 @@ Enable <b>SPRING_PROFILES_ACTIVE=query</b> to test query param based routing str
 
 ## References 
 
-* http://projects.spring.io/spring-cloud/
-* http://cloud.spring.io/spring-cloud-netflix/spring-cloud-netflix.html
-* https://cloud.spring.io/spring-cloud-gateway/
-* http://cloud.spring.io/spring-cloud-static/spring-cloud-gateway/2.0.0.M8/single/spring-cloud-gateway.html
+* [spriing-cloud](http://projects.spring.io/spring-cloud/)
+
+* [spring-cloud-gateway](https://cloud.spring.io/spring-cloud-gateway/)
+
 
