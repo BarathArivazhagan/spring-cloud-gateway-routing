@@ -4,13 +4,16 @@ server:
 logging:
   level:
      org.springframework.web: DEBUG
-  pattern:
-    level: "[%X{X-B3-TraceId}/%X{X-B3-SpanId}] %-5p [%t] %C{2} - %m%n"
-      
-       
+#  pattern:
+#    level: "[%X{X-B3-TraceId}/%X{X-B3-SpanId}] %-5p [%t] %C{2} - %m%n"
+     
 
 spring:
   profiles:
-    active:
-      - path # path | header | query are the other spring profiles for other strategies
-           
+    active:  path   # path | header | query are the other spring profiles for other strategies
+
+# disable eureka by default
+
+eureka:
+  client:
+    enabled: false

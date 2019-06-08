@@ -1,12 +1,15 @@
-package com.barath.airtel.app;
+package com.barath.jio.app;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
-public class AirtelStoreServiceApplication {
+public class Application {
 
 	public static void main(String[] args) {
-		SpringApplication.run(AirtelStoreServiceApplication.class, args);
+		SpringApplication.run(Application.class, args);
 	}
+
+
+
 }

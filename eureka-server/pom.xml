@@ -4,12 +4,12 @@
 	<modelVersion>4.0.0</modelVersion>
 
 	<groupId>com.barath.microservices</groupId>
-	<artifactId>config-server</artifactId>
+	<artifactId>eureka-server</artifactId>
 	<version>3.0.0.RELEASE</version>
 	<packaging>jar</packaging>
 
-	<name>config-server</name>
-	<description>config-server service for configuration management</description>
+	<name>eureka-server</name>
+	<description>eureka-server for service registration</description>
 
 	<parent>
 		<groupId>org.springframework.boot</groupId>
@@ -27,12 +27,13 @@
 
 	<dependencies>
 		<dependency>
-			<groupId>org.springframework.boot</groupId>
-			<artifactId>spring-boot-starter-webflux</artifactId>
+			<groupId>org.springframework.cloud</groupId>
+			<artifactId>spring-cloud-starter-netflix-eureka-server</artifactId>
 		</dependency>
+		
 		<dependency>
 			<groupId>org.springframework.cloud</groupId>
-			<artifactId>spring-cloud-config-server</artifactId>
+			<artifactId>spring-cloud-starter-config</artifactId>
 		</dependency>
 
 		<dependency>
@@ -43,11 +44,6 @@
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-test</artifactId>
-			<scope>test</scope>
-		</dependency>
-		<dependency>
-			<groupId>io.projectreactor</groupId>
-			<artifactId>reactor-test</artifactId>
 			<scope>test</scope>
 		</dependency>
 	</dependencies>
@@ -72,17 +68,12 @@
 			</plugin>
 		</plugins>
 	</build>
-
-	<repositories>
+	 <repositories>
 		<repository>
 			<id>spring-milestones</id>
 			<name>Spring Milestones</name>
 			<url>https://repo.spring.io/milestone</url>
-			<snapshots>
-				<enabled>false</enabled>
-			</snapshots>
 		</repository>
 	</repositories>
-
 
 </project>

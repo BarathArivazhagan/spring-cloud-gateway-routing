@@ -14,7 +14,7 @@ import static org.springframework.web.reactive.function.server.RequestPredicates
 
 
 /**
- * Created by barath on 03/03/18.
+ * @author barath
  */
 @Configuration
 public class RouterConfiguration {
@@ -29,9 +29,9 @@ public class RouterConfiguration {
     public RouterFunction<ServerResponse> routes(){
 
         return RouterFunctions
-                    .route(POST("/customer/add")
+                    .route(POST("/customer")
                             .and(accept(MediaType.APPLICATION_JSON_UTF8)),customerHandler::addCustomer)
-                    .andRoute(GET("/customer/get/{customerName}"),customerHandler::getCustomer)
+                    .andRoute(GET("/customer/{customerName}"),customerHandler::getCustomer)
                     .andRoute(GET("/customers"),customerHandler::getCustomers);
 
     }

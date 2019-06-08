@@ -1,5 +1,6 @@
 FROM openjdk:8-jdk-alpine
-MAINTAINER BARATH
+RUN adduser -D demo 
+USER demo
 VOLUME /tmp
 ADD target/config-server-*.jar app.jar
 ENTRYPOINT ["java","-Djava.security.egd=file:/dev/./urandom","-jar","/app.jar"]
