@@ -2,7 +2,7 @@
 # config map to pass environment variables to containers
 apiVersion: v1
 data:
-  spring.profiles.active: kubernetes,path
+  spring.profiles.active: k8s,path
 kind: ConfigMap
 metadata:
   name: spring-config-map

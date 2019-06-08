@@ -6,7 +6,7 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import javax.persistence.*;
 
 /**
- * Created by barath on 03/03/18.
+ * @author barath
  */
 @Entity
 @Table(name = "CUSTOMER")

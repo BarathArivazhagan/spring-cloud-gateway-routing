@@ -1,4 +1,4 @@
-package com.barath.vodaphone.app;
+package com.barath.airtel.app;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -7,7 +7,7 @@ import org.springframework.test.context.junit4.SpringRunner;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
-public class VodaphoneStoreServiceApplicationTests {
+public class ApplicationTests {
 
 	@Test
 	public void contextLoads() {

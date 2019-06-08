@@ -1,6 +1,11 @@
 version: '3'
-services: 
-  config-server-service:
+services:
+  eureka-server:
+    build: ./eureka-server
+    image: barathece91/eureka-server-k8s
+    ports:
+      - "8761:8761" 
+  config-server:
     build: ./config-server
     image: barathece91/config-server-k8s
     ports:

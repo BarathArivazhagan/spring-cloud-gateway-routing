@@ -1,8 +1,5 @@
-
 server:
   port: 9501
-
-
 
 spring:
   application:
@@ -11,3 +8,9 @@ spring:
       show-sql: true
       hibernate:
         ddl-auto: create
+        
+# disable eureka by default
+
+eureka:
+  client:
+    enabled: false
