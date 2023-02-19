@@ -3,7 +3,7 @@ package com.barath.vodaphone.app.entity;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
-import javax.persistence.*;
+import jakarta.persistence.*;
 
 /**
  * Created by barath on 03/03/18.

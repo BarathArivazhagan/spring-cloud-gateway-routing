@@ -1,5 +1,5 @@
-FROM openjdk:8-jdk-alpine
-RUN adduser -D demo
+FROM openjdk:17-jdk-slim-buster
+RUN useradd demo
 USER demo
 VOLUME /tmp
 ADD target/jio-store-service-*.jar app.jar
