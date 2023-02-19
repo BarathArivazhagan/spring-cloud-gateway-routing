@@ -8,9 +8,9 @@ RUN mvn clean install
 
 # Final stage
 
-FROM openjdk:8-jdk-alpine as final
+FROM openjdk:17-jdk-slim-buster as final
 # best practice is not to use root user
-RUN adduser -D demo 
+RUN useradd demo 
 USER demo
 COPY --from=builder  /opt/target/eureka-server-*.jar app.jar
 ENTRYPOINT ["java","-jar","app.jar"]
