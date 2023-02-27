@@ -3,7 +3,7 @@
 {{- $hostPort := .Values.gateway.hostPort | default 9500 -}}
 {{- $replicas := .Values.gateway.replicas | default 1 -}}
 {{- $globalConfigMapName := .Values.globalconfig.name | default "spring-config-map" -}}
-{{- $gatewayConfigMapName := .Values.gateway.name | default "api-gateway-config-map" -}}
+{{- $gatewayConfigMapName := .Values.gatewayconfig.name | default "api-gateway-config-map" -}}
 
 {{- $deploymentImage := .Values.gateway.image | required "There is no defualt image value. A value must be given in the appropriate values file" -}}
 

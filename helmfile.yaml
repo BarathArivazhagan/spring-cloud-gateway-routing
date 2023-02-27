@@ -1,0 +1,6 @@
+---
+releases: 
+        - name: mobile-cloud-gateway
+          chart: ./mobile-cloud-gateway
+          installed: true
+            
