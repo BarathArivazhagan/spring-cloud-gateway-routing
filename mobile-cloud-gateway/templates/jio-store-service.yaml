@@ -4,7 +4,7 @@
 {{- $replicas := .Values.airtel.replicas | default 1 -}}
 {{- $globalConfigMapName := .Values.globalconfig.name | default "spring-config-map" -}}
 
-{{- $deploymentImage := .Values.jio.image -}} : {{- required "There is no defualt image value. A value must be given in the appropriate values file" -}}
+{{- $deploymentImage := .Values.jio.image | required "There is no defualt image value. A value must be given in the appropriate values file" -}}
 
 ---
 apiVersion: apps/v1

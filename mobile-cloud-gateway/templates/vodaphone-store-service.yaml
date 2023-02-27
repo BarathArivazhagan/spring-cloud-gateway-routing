@@ -5,7 +5,7 @@
 {{- $globalConfigMapName := .Values.globalconfig.name | default "spring-config-map" -}}
 
 
-{{- $deploymentImage := .Values.vodaphone.image  -}} : {{- required "There is no defualt image value. A value must be given in the appropriate values file" -}}
+{{- $deploymentImage := .Values.vodaphone.image  | required "There is no defualt image value. A value must be given in the appropriate values file" -}}
 
 ---
 apiVersion: apps/v1

@@ -5,7 +5,7 @@
 {{- $globalConfigMapName := .Values.globalconfig.name | default "spring-config-map" -}}
 {{- $gatewayConfigMapName := .Values.gateway.name | default "api-gateway-config-map" -}}
 
-{{- $deploymentImage := .Values.gateway.image -}} : {{- required "There is no defualt image value. A value must be given in the appropriate values file" -}}
+{{- $deploymentImage := .Values.gateway.image | required "There is no defualt image value. A value must be given in the appropriate values file" -}}
 
 ---
 

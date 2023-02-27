@@ -1,10 +1,10 @@
-{{- $configMapName := .Values.gatewayconfig.name | default "api-gateway-config-map" -}}
+ {{- $configMapName := .Values.gatewayconfig.name | default "api-gateway-config-map" -}}
 
 ---
 
 kind: ConfigMap
 apiVersion: v1
 data:
-  {{- include "gateway.config" | nindent 4 -}}
+  {{- include "gateway.config" . | nindent 4 -}}
 metadata:
   name: {{ $configMapName }}

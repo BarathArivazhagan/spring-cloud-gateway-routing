@@ -3,7 +3,7 @@
 {{- $hostPort := .Values.airtel.hostPort | default 9502 -}}
 {{- $replicas := .Values.airtel.replicas | default 1 -}}
 
-{{- $deploymentImage := .Values.airtel.image -}} : {{- required "There is no defualt image value. A value must be given in the appropriate values file" -}}
+{{- $deploymentImage := .Values.airtel.image | required "There is no defualt image value. A value must be given in the appropriate values file" -}}
 ---
 
 apiVersion: apps/v1
@@ -37,5 +37,5 @@ spec:
   type: ClusterIP
   ports:
     - protocol: TCP
-      port: {{ $$hostPort }}
+      port: {{ $hostPort }}
       targetPort: {{ $containerPort }}
