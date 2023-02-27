@@ -1,4 +1,4 @@
-{{- $configMapName := | default "api-gateway-config-map" -}}
+{{- $configMapName := .Values.gatewayconfig.name | default "api-gateway-config-map" -}}
 
 ---
 
