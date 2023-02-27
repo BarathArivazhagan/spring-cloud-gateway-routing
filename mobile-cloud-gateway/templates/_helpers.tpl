@@ -2,13 +2,6 @@
 Define airtel-service env variables
 */}}
 
-{{- define "global.config" -}}
-    {{- $springActiveProfiles := .Values.globalconfig.springProfilesActive | default "k8s, path" -}}
-  
-spring.profiles.active: {{ $springActiveProfiles }}
-
-{{- end -}}
-
 {{- define "jio.service.url" -}}
 {{ (printf "http://%s:%v" .Values.jio.name .Values.jio.hostPort ) | default "http://jio-service:9501" }}
 {{- end -}}
@@ -43,18 +36,4 @@ spring.profiles.active: {{ $springActiveProfiles }}
 
 {{- define "vodaphone.service.path" -}}
 {{ (printf "Path= %s" .Values.vodaphone.path ) | default "Path= /vodaphone/*" }}
-{{- end -}}
-
-{{- define "gateway.config" -}}
-
-jio.service.url: {{ ( include "jio.service.url" . ) | quote }}
-jio.service.id: {{ ( include "jio.service.id" . ) | quote }}
-jio.service.path: {{ ( include "jio.service.path" . ) | quote }}
-airtel.service.url: {{ ( include "airtel.service.url" . ) | quote }}
-airtel.service.id: {{ ( include "airtel.service.id" . ) | quote }}
-airtel.service.path: {{ ( include "airtel.service.path" . ) | quote }}
-vodaphone.service.url: {{ ( include "vodaphone.service.url" . ) | quote }}
-vodaphone.service.id: {{ ( include "vodaphone.service.id" . ) | quote }}
-vodaphone.service.path: {{ ( include "vodaphone.service.path" . ) | quote }}
-
 {{- end -}}
