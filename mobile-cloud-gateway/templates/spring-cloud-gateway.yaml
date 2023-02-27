@@ -1,121 +1,100 @@
+{{- $deploymentName := .Values.gateway.name | default "gateway-service" -}}
+{{- $containerPort := .Values.gateway.containerPort | default 9500 -}}
+{{- $hostPort := .Values.gateway.hostPort | default 9500 -}}
+{{- $replicas := .Values.gateway.replicas | default 1 -}}
+{{- $globalConfigMapName := .Values.globalconfig.name | default "spring-config-map" -}}
+{{- $gatewayConfigMapName := .Values.gateway.name | default "api-gateway-config-map" -}}
 
-# deployment config for spring cloud gateway service
+{{- $deploymentImage := .Values.gateway.image -}} : {{- required "There is no defualt image value. A value must be given in the appropriate values file" -}}
+
+---
 
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: gateway-service
+  name: {{ $deploymentName }}
 spec:
   selector:
     matchLabels:
-      app: gateway-service
+      app: {{ $deploymentName }}
   replicas: 1
   template:
     metadata:
       labels:
-        app: gateway-service
+        app: {{ $deploymentName }}
     spec:
       containers:
-        - name: gateway-service
-          image: barathece91/gateway-service-k8s
+        - name: {{ $deploymentName }}
+          image: {{ $deploymentImage }}
           ports:
-            - containerPort: 9500
-          env:
-            - name: SPRING_PROFILES_ACTIVE
-              valueFrom:
+          - containerPort: {{ $containerPort }}
+          env:                  
+          - name: SPRING_PROFILES_ACTIVE
+            valueFrom:
                 configMapKeyRef:
-                  name: spring-config-map
-                  key: spring.profiles.active
-            - name: SPRING_CLOUD_GATEWAY_ROUTES_0_URI
-              valueFrom:
+                    name: {{ $globalConfigMapName }}
+                    key: spring.profiles.active
+          - name: SPRING_CLOUD_GATEWAY_ROUTES_0_URI
+            valueFrom:
                 configMapKeyRef:
-                  name: api-gateway-config-map
-                  key: jio.service.url
-            - name: SPRING_CLOUD_GATEWAY_ROUTES_0_ID
-              valueFrom:
+                    name: {{ $gatewayConfigMapName }}
+                    key: jio.service.url
+          - name: SPRING_CLOUD_GATEWAY_ROUTES_0_ID
+            valueFrom:
                 configMapKeyRef:
-                  name: api-gateway-config-map
-                  key: jio.service.id
-            - name: SPRING_CLOUD_GATEWAY_ROUTES_0_PREDICATES_0_
-              valueFrom:
+                    name: {{ $gatewayConfigMapName }}
+                    key: jio.service.id
+          - name: SPRING_CLOUD_GATEWAY_ROUTES_0_PREDICATES_0_
+            valueFrom:
                 configMapKeyRef:
-                  name: api-gateway-config-map
-                  key: jio.service.path
-            - name: SPRING_CLOUD_GATEWAY_ROUTES_0_FILTERS_0_
-              value: StripPrefix=1
-            - name: SPRING_CLOUD_GATEWAY_ROUTES_1_URI
-              valueFrom:
+                    name: {{ $gatewayConfigMapName }}
+                    key: jio.service.path
+          - name: SPRING_CLOUD_GATEWAY_ROUTES_0_FILTERS_0_
+            value: StripPrefix=1 
+          - name: SPRING_CLOUD_GATEWAY_ROUTES_1_URI
+            valueFrom:
                 configMapKeyRef:
-                  name: api-gateway-config-map
-                  key: airtel.service.url
-            - name: SPRING_CLOUD_GATEWAY_ROUTES_1_ID
-              valueFrom:
+                    name: {{ $gatewayConfigMapName }}
+                    key: airtel.service.url
+          - name: SPRING_CLOUD_GATEWAY_ROUTES_1_ID
+            valueFrom:
                 configMapKeyRef:
-                  name: api-gateway-config-map
-                  key: airtel.service.id
-            - name: SPRING_CLOUD_GATEWAY_ROUTES_1_PREDICATES_0_
-              valueFrom:
+                    name: {{ $gatewayConfigMapName }}
+                    key: airtel.service.id
+          - name: SPRING_CLOUD_GATEWAY_ROUTES_1_PREDICATES_0_
+            valueFrom:
                 configMapKeyRef:
-                  name: api-gateway-config-map
-                  key: airtel.service.path
-            - name: SPRING_CLOUD_GATEWAY_ROUTES_2_FILTERS_0_
-              value: StripPrefix=1
-            - name: SPRING_CLOUD_GATEWAY_ROUTES_2_URI
-              valueFrom:
+                    name: {{ $gatewayConfigMapName }}
+                    key: airtel.service.path
+          - name: SPRING_CLOUD_GATEWAY_ROUTES_2_FILTERS_0_
+            value: StripPrefix=1 
+          - name: SPRING_CLOUD_GATEWAY_ROUTES_2_URI
+            valueFrom:
                 configMapKeyRef:
-                  name: api-gateway-config-map
-                  key: vodaphone.service.url
-            - name: SPRING_CLOUD_GATEWAY_ROUTES_2_ID
-              valueFrom:
+                    name: {{ $gatewayConfigMapName }}
+                    key: vodaphone.service.url
+          - name: SPRING_CLOUD_GATEWAY_ROUTES_2_ID
+            valueFrom:
                 configMapKeyRef:
-                  name: api-gateway-config-map
-                  key: vodaphone.service.id
-            - name: SPRING_CLOUD_GATEWAY_ROUTES_2_PREDICATES_0_
-              valueFrom:
+                    name: {{ $gatewayConfigMapName }}
+                    key: vodaphone.service.id
+          - name: SPRING_CLOUD_GATEWAY_ROUTES_2_PREDICATES_0_
+            valueFrom:
                 configMapKeyRef:
-                  name: api-gateway-config-map
-                  key: vodaphone.service.path
-            - name: SPRING_CLOUD_GATEWAY_ROUTES_2_FILTERS_0_
-              value: StripPrefix=1
-
+                    name: {{ $gatewayConfigMapName }}
+                    key: vodaphone.service.path
+          
 ---
 
 kind: Service
 apiVersion: v1
 metadata:
-  name: gateway-service
+  name: {{ $deploymentName }}
 spec:
   selector:
-    app: gateway-service
+    app: {{ $deploymentName }}
   type: ClusterIP
   ports:
     - protocol: TCP
-      port: 9500
-      targetPort: 9500
-
----
-
-# config map to pass environment variables to gateway-service
-apiVersion: v1
-data:
-  jio.service.url: http://jio-service:9501
-  jio.service.id: jio-service
-  jio.service.path: Path= /jio/*
-  airtel.service.url:  http://airtel-service:9502
-  airtel.service.id: airtel-service
-  airtel.service.path: Path= /airtel/*
-  vodaphone.service.url: http://vodaphone-service:9503
-  vodaphone.service.id: vodaphone-service
-  vodaphone.service.path: Path= /vodaphone/*
-kind: ConfigMap
-metadata:
-  name: api-gateway-config-map
-
----
-
-apiVersion: v1
-data:
-  spring.profiles.active: k8s,path
-kind: ConfigMap
-metadata:
-  name: spring-config-map
+      port: {{ $hostPort }}
+      targetPort: {{ $containerPort }}

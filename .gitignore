@@ -23,3 +23,9 @@ hs_err_pid*
 
 .vscode/*
 .vscode
+
+
+mvnw
+mvnw.cmd
+.mvn/wrapper/maven-wrapper.properties
+.mvn/wrapper/MavenWrapperDownloader.java

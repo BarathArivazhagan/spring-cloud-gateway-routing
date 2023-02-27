@@ -1,0 +1,10 @@
+{{- $configMapName := .Values.globalconfig.name | default "spring-config-map" -}}
+
+---
+
+kind: ConfigMap
+apiVersion: v1
+data:
+    {{- include "global.config" | nindent 4 -}}
+metadata:
+  name: {{ $configMapName}}

@@ -1,62 +1,60 @@
-{{/*
-Expand the name of the chart.
+{{/* 
+Define airtel-service env variables
 */}}
-{{- define "mobile-cloud-gateway.name" -}}
-{{- default .Chart.Name .Values.nameOverride | trunc 63 | trimSuffix "-" }}
-{{- end }}
 
-{{/*
-Create a default fully qualified app name.
-We truncate at 63 chars because some Kubernetes name fields are limited to this (by the DNS naming spec).
-If release name contains chart name it will be used as a full name.
-*/}}
-{{- define "mobile-cloud-gateway.fullname" -}}
-{{- if .Values.fullnameOverride }}
-{{- .Values.fullnameOverride | trunc 63 | trimSuffix "-" }}
-{{- else }}
-{{- $name := default .Chart.Name .Values.nameOverride }}
-{{- if contains $name .Release.Name }}
-{{- .Release.Name | trunc 63 | trimSuffix "-" }}
-{{- else }}
-{{- printf "%s-%s" .Release.Name $name | trunc 63 | trimSuffix "-" }}
-{{- end }}
-{{- end }}
-{{- end }}
+{{- define "global.config" -}}
+    {{- $springActiveProfiles := .Values.globalconfig.springProfilesActive | default "k8s, path" -}}
+  
+spring.profiles.active: {{ $springActiveProfiles }}
 
-{{/*
-Create chart name and version as used by the chart label.
-*/}}
-{{- define "mobile-cloud-gateway.chart" -}}
-{{- printf "%s-%s" .Chart.Name .Chart.Version | replace "+" "_" | trunc 63 | trimSuffix "-" }}
-{{- end }}
+{{- end -}}
 
-{{/*
-Common labels
-*/}}
-{{- define "mobile-cloud-gateway.labels" -}}
-helm.sh/chart: {{ include "mobile-cloud-gateway.chart" . }}
-{{ include "mobile-cloud-gateway.selectorLabels" . }}
-{{- if .Chart.AppVersion }}
-app.kubernetes.io/version: {{ .Chart.AppVersion | quote }}
-{{- end }}
-app.kubernetes.io/managed-by: {{ .Release.Service }}
-{{- end }}
+{{- define "jio.service.url"-}}
+{{ (printf "http://%s:%v" .Values.jio.name .Values.jio.hostPort ) | default "http://jio-service:9501" }}
+{{- end -}}
 
-{{/*
-Selector labels
-*/}}
-{{- define "mobile-cloud-gateway.selectorLabels" -}}
-app.kubernetes.io/name: {{ include "mobile-cloud-gateway.name" . }}
-app.kubernetes.io/instance: {{ .Release.Name }}
-{{- end }}
+{{- define "jio.service.id" -}}
+{{ (printf "%s" .Values.jio.name ) | default "jio-service" }}
+{{- end -}}
 
-{{/*
-Create the name of the service account to use
-*/}}
-{{- define "mobile-cloud-gateway.serviceAccountName" -}}
-{{- if .Values.serviceAccount.create }}
-{{- default (include "mobile-cloud-gateway.fullname" .) .Values.serviceAccount.name }}
-{{- else }}
-{{- default "default" .Values.serviceAccount.name }}
-{{- end }}
-{{- end }}
+{{- define "jio.service.path" -}}
+{{ (printf "Path= %s" .Values.jio.path ) | default "Path= /jio/*" }}
+{{- end -}}
+
+{{- define "airtel.service.url"-}}
+{{ (printf "http://%s:%v" .Values.airtel.name .Values.airtel.hostPort ) | default "http://airtel-service:9501" }}
+{{- end -}}
+
+{{- define "airtel.service.id" -}}
+{{ (printf "%s" .Values.airtel.name ) | default "airtel-service" }}
+{{- end -}}
+
+{{- define "airtel.service.path" -}}
+{{ (printf "Path= %s" .Values.airtel.path ) | default "Path= /airtel/*" }}
+{{- end -}}
+
+{{- define "vodaphone.service.url"-}}
+{{ (printf "http://%s:%v" .Values.vodaphone.name .Values.vodaphone.hostPort ) | default "http://vodaphone-service:9501" }}
+{{- end -}}
+
+{{- define "vodaphone.service.id" -}}
+{{ (printf "%s" .Values.vodaphone.name ) | default "vodaphone-service" }}
+{{- end -}}
+
+{{- define "vodaphone.service.path" -}}
+{{ (printf "Path= %s" .Values.vodaphone.path ) | default "Path= /vodaphone/*" }}
+{{- end -}}
+
+{{- define "gateway.config" -}}
+
+jio.service.url: {{ ( include "jio.service.url" . ) | quote }}
+jio.service.id: {{ ( include "jio.service.id" . ) | quote }}
+jio.service.path: {{ ( include "jio.service.path" . ) | quote }}
+airtel.service.url: {{ ( include "airtel.service.url" . ) | quote }}
+airtel.service.id: {{ ( include "airtel.service.id" . ) | quote }}
+airtel.service.path: {{ ( include "airtel.service.path" . ) | quote }}
+vodaphone.service.url: {{ ( include "vodaphone.service.url" . ) | quote }}
+vodaphone.service.id: {{ ( include "vodaphone.service.id" . ) | quote }}
+vodaphone.service.path: {{ ( include "vodaphone.service.path" . ) | quote }}
+
+{{- end -}}

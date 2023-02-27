@@ -1,4 +1,4 @@
-{{- $deploymentName := .Values.airtel.name | default "{{ $deploymentName }}" -}}
+{{- $deploymentName := .Values.airtel.name | default "airtel-service" -}}
 {{- $containerPort := .Values.airtel.containerPort | default 9502 -}}
 {{- $hostPort := .Values.airtel.hostPort | default 9502 -}}
 {{- $replicas := .Values.airtel.replicas | default 1 -}}

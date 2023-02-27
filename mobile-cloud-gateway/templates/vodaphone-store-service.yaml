@@ -1,29 +1,37 @@
-# deployment config for vodaphone-store-service
+{{- $deploymentName := .Values.vodaphone.name | default "vodaphone-service" -}}
+{{- $containerPort := .Values.vodaphone.containerPort | default 9503 -}}
+{{- $hostPort := .Values.vodaphone.hostPort | default 9503 -}}
+{{- $replicas := .Values.vodaphone.replicas | default 1 -}}
+{{- $globalConfigMapName := .Values.globalconfig.name | default "spring-config-map" -}}
 
+
+{{- $deploymentImage := .Values.vodaphone.image  -}} : {{- required "There is no defualt image value. A value must be given in the appropriate values file" -}}
+
+---
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: vodaphone-service
+  name: {{ $deploymentName }}
 spec:
   selector:
     matchLabels:
-      app: vodaphone-service
+      app: {{ $deploymentName }}
   replicas: 1
   template:
     metadata:
       labels:
-        app: vodaphone-service
+        app: {{ $deploymentName }}
     spec:
       containers:
-        - name: vodaphone-service
-          image: barathece91/vodaphone-service-k8s
+        - name: {{ $deploymentName }}
+          image: {{ $deploymentImage }}
           ports:
-            - containerPort: 9503
+            - containerPort: {{ $containerPort }}
           env:
             - name: SPRING_PROFILES_ACTIVE
               valueFrom:
                 configMapKeyRef:
-                  name: spring-config-map
+                  name: {{ $globalConfigMapName }}
                   key: spring.profiles.active
 
 ---
@@ -31,12 +39,12 @@ spec:
 kind: Service
 apiVersion: v1
 metadata:
-  name: vodaphone-service
+  name: {{ $deploymentName }}
 spec:
   selector:
-    app: vodaphone-service
+    app: {{ $deploymentName }}
   type: ClusterIP
   ports:
     - protocol: TCP
-      port: 9503
-      targetPort: 9503
+      port: {{ $hostPort }}
+      targetPort: {{ $containerPort }}
