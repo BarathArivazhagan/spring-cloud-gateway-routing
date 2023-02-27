@@ -1,0 +1,121 @@
+
+# deployment config for spring cloud gateway service
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: gateway-service
+spec:
+  selector:
+    matchLabels:
+      app: gateway-service
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: gateway-service
+    spec:
+      containers:
+        - name: gateway-service
+          image: barathece91/gateway-service-k8s
+          ports:
+            - containerPort: 9500
+          env:
+            - name: SPRING_PROFILES_ACTIVE
+              valueFrom:
+                configMapKeyRef:
+                  name: spring-config-map
+                  key: spring.profiles.active
+            - name: SPRING_CLOUD_GATEWAY_ROUTES_0_URI
+              valueFrom:
+                configMapKeyRef:
+                  name: api-gateway-config-map
+                  key: jio.service.url
+            - name: SPRING_CLOUD_GATEWAY_ROUTES_0_ID
+              valueFrom:
+                configMapKeyRef:
+                  name: api-gateway-config-map
+                  key: jio.service.id
+            - name: SPRING_CLOUD_GATEWAY_ROUTES_0_PREDICATES_0_
+              valueFrom:
+                configMapKeyRef:
+                  name: api-gateway-config-map
+                  key: jio.service.path
+            - name: SPRING_CLOUD_GATEWAY_ROUTES_0_FILTERS_0_
+              value: StripPrefix=1
+            - name: SPRING_CLOUD_GATEWAY_ROUTES_1_URI
+              valueFrom:
+                configMapKeyRef:
+                  name: api-gateway-config-map
+                  key: airtel.service.url
+            - name: SPRING_CLOUD_GATEWAY_ROUTES_1_ID
+              valueFrom:
+                configMapKeyRef:
+                  name: api-gateway-config-map
+                  key: airtel.service.id
+            - name: SPRING_CLOUD_GATEWAY_ROUTES_1_PREDICATES_0_
+              valueFrom:
+                configMapKeyRef:
+                  name: api-gateway-config-map
+                  key: airtel.service.path
+            - name: SPRING_CLOUD_GATEWAY_ROUTES_2_FILTERS_0_
+              value: StripPrefix=1
+            - name: SPRING_CLOUD_GATEWAY_ROUTES_2_URI
+              valueFrom:
+                configMapKeyRef:
+                  name: api-gateway-config-map
+                  key: vodaphone.service.url
+            - name: SPRING_CLOUD_GATEWAY_ROUTES_2_ID
+              valueFrom:
+                configMapKeyRef:
+                  name: api-gateway-config-map
+                  key: vodaphone.service.id
+            - name: SPRING_CLOUD_GATEWAY_ROUTES_2_PREDICATES_0_
+              valueFrom:
+                configMapKeyRef:
+                  name: api-gateway-config-map
+                  key: vodaphone.service.path
+            - name: SPRING_CLOUD_GATEWAY_ROUTES_2_FILTERS_0_
+              value: StripPrefix=1
+
+---
+
+kind: Service
+apiVersion: v1
+metadata:
+  name: gateway-service
+spec:
+  selector:
+    app: gateway-service
+  type: ClusterIP
+  ports:
+    - protocol: TCP
+      port: 9500
+      targetPort: 9500
+
+---
+
+# config map to pass environment variables to gateway-service
+apiVersion: v1
+data:
+  jio.service.url: http://jio-service:9501
+  jio.service.id: jio-service
+  jio.service.path: Path= /jio/*
+  airtel.service.url:  http://airtel-service:9502
+  airtel.service.id: airtel-service
+  airtel.service.path: Path= /airtel/*
+  vodaphone.service.url: http://vodaphone-service:9503
+  vodaphone.service.id: vodaphone-service
+  vodaphone.service.path: Path= /vodaphone/*
+kind: ConfigMap
+metadata:
+  name: api-gateway-config-map
+
+---
+
+apiVersion: v1
+data:
+  spring.profiles.active: k8s,path
+kind: ConfigMap
+metadata:
+  name: spring-config-map

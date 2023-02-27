@@ -1,0 +1,16 @@
+environment:
+  stage: dev
+
+airtel:
+  name: "airtel-service"
+  image: "iusetabs/airtel-service-k8s"
+  containerPort: 9502
+  hostPort: 9502
+  replicas: 1
+
+jio:
+  name: "jio-service"
+  image: "iusetabs/jio-service-k8s"
+  containerPort: 9501
+  hostPort: 9501
+  replicas: 1

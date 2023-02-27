@@ -1,0 +1,42 @@
+# deployment config for vodaphone-store-service
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: vodaphone-service
+spec:
+  selector:
+    matchLabels:
+      app: vodaphone-service
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: vodaphone-service
+    spec:
+      containers:
+        - name: vodaphone-service
+          image: barathece91/vodaphone-service-k8s
+          ports:
+            - containerPort: 9503
+          env:
+            - name: SPRING_PROFILES_ACTIVE
+              valueFrom:
+                configMapKeyRef:
+                  name: spring-config-map
+                  key: spring.profiles.active
+
+---
+
+kind: Service
+apiVersion: v1
+metadata:
+  name: vodaphone-service
+spec:
+  selector:
+    app: vodaphone-service
+  type: ClusterIP
+  ports:
+    - protocol: TCP
+      port: 9503
+      targetPort: 9503
