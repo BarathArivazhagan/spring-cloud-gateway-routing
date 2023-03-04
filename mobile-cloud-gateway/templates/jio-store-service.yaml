@@ -1,0 +1,49 @@
+{{- $deploymentName := .Values.jio.name | default "jio-service" -}}
+{{- $containerPort := .Values.airtel.containerPort | default 9501 -}}
+{{- $hostPort := .Values.airtel.hostPort | default 9501 -}}
+{{- $replicas := .Values.airtel.replicas | default 1 -}}
+{{- $globalConfigMapName := .Values.globalconfig.name | default "spring-config-map" -}}
+
+{{- $deploymentImage := .Values.jio.image | required "There is no defualt image value. A value must be given in the appropriate values file" -}}
+
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ $deploymentName }}
+spec:
+  selector:
+    matchLabels:
+      app: {{ $deploymentName }}
+  replicas: {{ $replicas }}
+  template:
+    metadata:
+      labels:
+        app: {{ $deploymentName }}
+    spec:
+      containers:
+        - name: {{ $deploymentName }}
+          image: {{ $deploymentImage }}
+          ports:
+            - containerPort: {{ $containerPort }}
+          env:
+            - name: SPRING_PROFILES_ACTIVE
+              valueFrom:
+                configMapKeyRef:
+                  name: {{ $globalConfigMapName }}
+                  key: spring.profiles.active
+
+---
+kind: Service
+apiVersion: v1
+metadata:
+  name: {{ $deploymentName }}
+spec:
+  selector:
+    app: {{ $deploymentName }}
+  type: ClusterIP
+  ports:
+    - protocol: TCP
+      port: {{ $hostPort }}
+      targetPort: {{ $containerPort }}
+

@@ -13,8 +13,3 @@ spring:
     active:  path   # path | header | query are the other spring profiles for other strategies
   application:
     name: api-gateway
-# disable eureka by default
-
-eureka:
-  client:
-    enabled: false

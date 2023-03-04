@@ -67,32 +67,8 @@ choose the branch based on below maintained versions.
     <td>8888</td>
     <td>spring cloud config server </td>
   </tr>
-     <tr>
-    <td><a href="https://github.com/BarathArivazhagan/spring-cloud-gateway-routing/tree/master/eureka-server">eureka-server</a></td>
-    <td>8761</td>
-    <td>eureka-server </td>
-  </tr>
   
 </table>
-
-#### Eureka Server Registration (Optional)
-
-By default eureka is disabled.
-
-```yaml
-eureka:
-  client:
-    enabled: false
-```
-
-To enable eureka, set below property in all the microservices and restart.
-
-```yaml
-spring:
-  profiles:
-    active: eureka
-```
-
 
 #### How to build and run ?
 
@@ -186,12 +162,6 @@ Enable <b>SPRING_PROFILES_ACTIVE=header</b> to test header based routing strateg
 ![spring cloud gateway](images/spring_cloud_gateway_param.png)
 
 Enable <b>SPRING_PROFILES_ACTIVE=query</b> to test query param based routing strategy
-
-#### Eureka Registration View
-
-![eureka_registration_view](images/eureka_registration_view.png)
-
-
 
 #### How to rebuild the project after the changes? 
 

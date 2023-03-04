@@ -1,0 +1,50 @@
+{{- $deploymentName := .Values.vodaphone.name | default "vodaphone-service" -}}
+{{- $containerPort := .Values.vodaphone.containerPort | default 9503 -}}
+{{- $hostPort := .Values.vodaphone.hostPort | default 9503 -}}
+{{- $replicas := .Values.vodaphone.replicas | default 1 -}}
+{{- $globalConfigMapName := .Values.globalconfig.name | default "spring-config-map" -}}
+
+
+{{- $deploymentImage := .Values.vodaphone.image  | required "There is no defualt image value. A value must be given in the appropriate values file" -}}
+
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ $deploymentName }}
+spec:
+  selector:
+    matchLabels:
+      app: {{ $deploymentName }}
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: {{ $deploymentName }}
+    spec:
+      containers:
+        - name: {{ $deploymentName }}
+          image: {{ $deploymentImage }}
+          ports:
+            - containerPort: {{ $containerPort }}
+          env:
+            - name: SPRING_PROFILES_ACTIVE
+              valueFrom:
+                configMapKeyRef:
+                  name: {{ $globalConfigMapName }}
+                  key: spring.profiles.active
+
+---
+
+kind: Service
+apiVersion: v1
+metadata:
+  name: {{ $deploymentName }}
+spec:
+  selector:
+    app: {{ $deploymentName }}
+  type: ClusterIP
+  ports:
+    - protocol: TCP
+      port: {{ $hostPort }}
+      targetPort: {{ $containerPort }}

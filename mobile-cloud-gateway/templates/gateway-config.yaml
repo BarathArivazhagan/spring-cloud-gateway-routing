@@ -1,0 +1,17 @@
+{{- $configMapName := .Values.gatewayconfig.name | default "api-gateway-config-map" -}}
+---
+
+kind: ConfigMap
+apiVersion: v1
+data:
+  jio.service.url: {{ ( include "jio.service.url" . ) }}
+  jio.service.id: {{ ( include "jio.service.id" . )  }}
+  jio.service.path: {{ ( include "jio.service.path" . )  }}
+  airtel.service.url: {{ ( include "airtel.service.url" . )  }}
+  airtel.service.id: {{ ( include "airtel.service.id" . )  }}
+  airtel.service.path: {{ ( include "airtel.service.path" . )  }}
+  vodaphone.service.url: {{ ( include "vodaphone.service.url" . )  }}
+  vodaphone.service.id: {{ ( include "vodaphone.service.id" . )  }}
+  vodaphone.service.path: {{ ( include "vodaphone.service.path" . )  }}
+metadata:
+  name: {{ $configMapName }}

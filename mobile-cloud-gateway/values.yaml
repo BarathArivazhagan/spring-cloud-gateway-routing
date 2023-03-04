@@ -1,0 +1,40 @@
+environment:
+  stage: dev
+
+airtel:
+  name: "airtel-service"
+  image: "iusetabs/airtel-store-service-k8s"
+  containerPort: 9502
+  hostPort: 9502
+  replicas: 1
+  path: "/airtel/*"
+
+jio:
+  name: "jio-service"
+  image: "iusetabs/jio-store-service-k8s"
+  containerPort: 9501
+  hostPort: 9501
+  replicas: 1
+  path: "/jio/*"
+
+vodaphone: 
+  name: "vodaphone-service"
+  image: "iusetabs/vodaphone-store-service-k8s"
+  containerPort: 9503
+  hostPort: 9503
+  replicas: 1
+  path: "/vodaphone/*"
+
+gateway: 
+  name: "gatway-service"
+  image: "iusetabs/gateway-service-k8s"
+  containerPort: 9500
+  hostPort: 9500
+  replicas: 1
+
+globalconfig:
+  name: "spring-config-map"
+  springProfilesActive: "k8s, path"
+  
+gatewayconfig: 
+  name: "api-gateway-config-map"

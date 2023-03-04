@@ -1,0 +1,10 @@
+apiVersion: v2
+name: mobile-cloud-gateway
+description: A Helm chart for the spring cloud gateway routing example
+
+type: application
+
+# Versions are expected to follow Semantic Versioning (https://semver.org/)
+version: 0.2.1
+
+appVersion: "0.1.0"

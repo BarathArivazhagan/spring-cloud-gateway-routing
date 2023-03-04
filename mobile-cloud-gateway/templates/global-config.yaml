@@ -1,0 +1,11 @@
+{{- $configMapName := .Values.globalconfig.name | default "spring-config-map" -}}
+  {{- $springActiveProfiles := .Values.globalconfig.springProfilesActive | default "k8s, path" -}}
+
+---
+
+kind: ConfigMap
+apiVersion: v1
+data:
+  spring.profiles.active: {{ $springActiveProfiles }}
+metadata:
+  name: {{ $configMapName}}

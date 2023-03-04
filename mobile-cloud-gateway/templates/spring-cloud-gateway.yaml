@@ -1,0 +1,100 @@
+{{- $deploymentName := .Values.gateway.name | default "gateway-service" -}}
+{{- $containerPort := .Values.gateway.containerPort | default 9500 -}}
+{{- $hostPort := .Values.gateway.hostPort | default 9500 -}}
+{{- $replicas := .Values.gateway.replicas | default 1 -}}
+{{- $globalConfigMapName := .Values.globalconfig.name | default "spring-config-map" -}}
+{{- $gatewayConfigMapName := .Values.gatewayconfig.name | default "api-gateway-config-map" -}}
+
+{{- $deploymentImage := .Values.gateway.image | required "There is no defualt image value. A value must be given in the appropriate values file" -}}
+
+---
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ $deploymentName }}
+spec:
+  selector:
+    matchLabels:
+      app: {{ $deploymentName }}
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: {{ $deploymentName }}
+    spec:
+      containers:
+        - name: {{ $deploymentName }}
+          image: {{ $deploymentImage }}
+          ports:
+          - containerPort: {{ $containerPort }}
+          env:                  
+          - name: SPRING_PROFILES_ACTIVE
+            valueFrom:
+                configMapKeyRef:
+                    name: {{ $globalConfigMapName }}
+                    key: spring.profiles.active
+          - name: SPRING_CLOUD_GATEWAY_ROUTES_0_URI
+            valueFrom:
+                configMapKeyRef:
+                    name: {{ $gatewayConfigMapName }}
+                    key: jio.service.url
+          - name: SPRING_CLOUD_GATEWAY_ROUTES_0_ID
+            valueFrom:
+                configMapKeyRef:
+                    name: {{ $gatewayConfigMapName }}
+                    key: jio.service.id
+          - name: SPRING_CLOUD_GATEWAY_ROUTES_0_PREDICATES_0_
+            valueFrom:
+                configMapKeyRef:
+                    name: {{ $gatewayConfigMapName }}
+                    key: jio.service.path
+          - name: SPRING_CLOUD_GATEWAY_ROUTES_0_FILTERS_0_
+            value: StripPrefix=1 
+          - name: SPRING_CLOUD_GATEWAY_ROUTES_1_URI
+            valueFrom:
+                configMapKeyRef:
+                    name: {{ $gatewayConfigMapName }}
+                    key: airtel.service.url
+          - name: SPRING_CLOUD_GATEWAY_ROUTES_1_ID
+            valueFrom:
+                configMapKeyRef:
+                    name: {{ $gatewayConfigMapName }}
+                    key: airtel.service.id
+          - name: SPRING_CLOUD_GATEWAY_ROUTES_1_PREDICATES_0_
+            valueFrom:
+                configMapKeyRef:
+                    name: {{ $gatewayConfigMapName }}
+                    key: airtel.service.path
+          - name: SPRING_CLOUD_GATEWAY_ROUTES_2_FILTERS_0_
+            value: StripPrefix=1 
+          - name: SPRING_CLOUD_GATEWAY_ROUTES_2_URI
+            valueFrom:
+                configMapKeyRef:
+                    name: {{ $gatewayConfigMapName }}
+                    key: vodaphone.service.url
+          - name: SPRING_CLOUD_GATEWAY_ROUTES_2_ID
+            valueFrom:
+                configMapKeyRef:
+                    name: {{ $gatewayConfigMapName }}
+                    key: vodaphone.service.id
+          - name: SPRING_CLOUD_GATEWAY_ROUTES_2_PREDICATES_0_
+            valueFrom:
+                configMapKeyRef:
+                    name: {{ $gatewayConfigMapName }}
+                    key: vodaphone.service.path
+          
+---
+
+kind: Service
+apiVersion: v1
+metadata:
+  name: {{ $deploymentName }}
+spec:
+  selector:
+    app: {{ $deploymentName }}
+  type: ClusterIP
+  ports:
+    - protocol: TCP
+      port: {{ $hostPort }}
+      targetPort: {{ $containerPort }}
