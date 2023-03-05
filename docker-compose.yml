@@ -1,5 +1,10 @@
 version: '3'
 services:
+  frontend-microservice:
+    build: ./frontend
+    image: iusetabs/frontend-service-k8s
+    ports:
+      - "8080:80"
   config-server:
     build: ./config-server
     image: iusetabs/config-server-k8s

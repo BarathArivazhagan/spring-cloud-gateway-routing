@@ -1,7 +1,3 @@
-{{/* 
-Define airtel-service env variables
-*/}}
-
 {{- define "jio.service.url" -}}
 {{ (printf "http://%s:%v" .Values.jio.name .Values.jio.hostPort ) | default "http://jio-service:9501" }}
 {{- end -}}
@@ -36,4 +32,8 @@ Define airtel-service env variables
 
 {{- define "vodaphone.service.path" -}}
 {{ (printf "Path= %s" .Values.vodaphone.path ) | default "Path= /vodaphone/*" }}
+{{- end -}}
+
+{{- define "frontend.nodeport.name" -}}
+{{ (printf "%s-nodeport" .Values.frontend.name ) | default "frontend-service-nodeport" }}
 {{- end -}}

@@ -1,0 +1,60 @@
+{{- $deploymentName := .Values.frontend.name | default "frontend-service" -}}
+{{- $containerPort := .Values.frontend.containerPort | default "80" -}}
+{{- $hostPort := .Values.frontend.hostPort | default "80" -}}
+{{- $nodePort := .Values.frontend.nodePort | default "30123" -}}
+{{- $replicas := .Values.frontend.replicas | default 1 -}}
+
+{{- $deploymentImage := .Values.frontend.image  | required "There is no defualt image value. A value must be given in the appropriate values file" -}}
+
+---
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ $deploymentName }}
+spec:
+  selector:
+    matchLabels:
+      app: {{ $deploymentName }}
+  replicas: {{ $replicas }}
+  template:
+    metadata:
+      labels:
+        app: {{ $deploymentName }}
+    spec:
+      containers:
+        - name: {{ $deploymentName }}
+          image: {{ $deploymentImage}}
+          imagePullPolicy: Always
+          ports:
+            - containerPort: {{ $containerPort }}
+---
+
+kind: Service
+apiVersion: v1
+metadata:
+  name: {{ $deploymentName }}
+spec:
+  selector:
+    app: {{ $deploymentName }}
+  type: ClusterIP
+  ports:
+    - protocol: TCP
+      port: {{ $hostPort }}
+      targetPort: {{ $containerPort }}
+    
+---
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ ( include "frontend.nodeport.name" . ) }}
+spec:
+  type: NodePort
+  ports:
+    - port: {{ $containerPort }}
+      protocol: TCP
+      targetPort: {{ $hostPort }}
+      nodePort: {{ $containerPort }}
+  selector:
+    app: {{ $deploymentName }}

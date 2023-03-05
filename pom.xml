@@ -24,8 +24,8 @@
          <module>jio-store-service</module>
          <module>vodaphone-store-service</module>
          <module>spring-cloud-gateway</module>
-         <module>config-server</module>
-    </modules>
+         <module>config-server</module>	 
+    </modules>	
 
 
 </project>
